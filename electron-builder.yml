@@ -1,0 +1,13 @@
+files: "./build/**/*"
+appId: "com.electron-starter"
+extraResources:
+  - "./assets"
+linux:
+  category: Utility
+  target: AppImage
+  icon: assets/icons
+  artifactName: ${productName}.${ext}
+win:
+  target: nsis
+  icon: assets/icon.ico
+  artifactName: ${productName}.${ext}

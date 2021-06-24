@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+const path = require("path");
+const dotenv = require("dotenv-safe");
+const { execSync } = require("child_process");
+
+dotenv.config();
+
+const { name, version } = require("../package.json");
+
+const win = path.join(__dirname, `../dist/${name}.exe`);
+const linux = path.join(__dirname, `../dist/${name}.AppImage`);
+
+execSync(
+  `
+  gh release create v${version} --notes "v${version}" --repo ${process.env.GITHUB_RELEASES_REPOSITORY} --title v${version} "${win}" "${linux}"
+`,
+  { stdio: "inherit" }
+);

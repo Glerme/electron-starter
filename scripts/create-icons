@@ -1,0 +1,43 @@
+#!/bin/bash
+
+PROG_NAME=$(basename "$0")
+SCRIPT_DIR=$(realpath "$(dirname "$0")")
+
+usage() {
+  echo "$PROG_NAME: usage: $PROG_NAME <file.png>"
+}
+
+if [ "$#" != "1" ]; then
+  echo "$PROG_NAME: invalid number of parameters"
+  usage
+  exit 1
+fi
+
+if [ "${1: -4}" != ".png" ]; then
+  echo "$PROG_NAME: invalid parameter '$1'"
+  usage
+  exit 1
+fi
+
+if [ ! -r "$1" ]; then
+  echo "$PROG_NAME: file '$1' is not readable or doesnt exists"
+  usage
+  exit 1
+fi
+
+TEMP_FOLDER=$(mktemp -d)
+ASSETS_DIR=$(realpath "$SCRIPT_DIR/../assets")
+PNG_FILE="$1"
+
+mkdir -p "$ASSETS_DIR"
+
+ICONS_FOLDER="$TEMP_FOLDER/icons/png"
+ICO_FILE="$TEMP_FOLDER/icons/win/icon.ico"
+
+yarn electron-icon-builder --input="$PNG_FILE" --output="$TEMP_FOLDER"
+
+mv "$ICONS_FOLDER" "$ASSETS_DIR/icons"
+mv "$ICO_FILE" "$ASSETS_DIR/icon.ico"
+cp "$PNG_FILE" "$ASSETS_DIR/icon.png"
+
+rm -r "$TEMP_FOLDER"
