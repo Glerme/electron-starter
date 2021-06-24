@@ -69,4 +69,3 @@ yarn dist-linux
 
 ---
 
-<p align="center">Copyright 2021 - Allcom Sistemas</p>
